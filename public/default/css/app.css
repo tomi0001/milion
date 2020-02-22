@@ -1,0 +1,158 @@
+
+
+body {
+
+    
+     
+
+
+background: rgb(53,66,169);
+background: radial-gradient(circle, rgba(53,66,169,1) 0%, rgba(74,131,190,1) 100%); 
+
+    
+    
+
+}
+
+div.blank {
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.login {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #416679;
+    opacity: 0.6;
+    width: 650px;
+    min-height: 350px;
+    border-radius: 25px;
+    
+}
+span.error {
+    color: #DD1410;
+    font-size: 17px;
+}
+span.succes {
+    color: green;
+    font-size: 17px;
+}
+div.message {
+    background-color: #EAF21B;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 30px;
+    
+}
+div.addSugar {
+    width: 550px;
+    height: 140px;
+    background-color: #3E4A8F;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    border-left: medium solid #C7E909;
+    border-right: medium solid #C7E909;
+    border-bottom: medium solid #C7E909;
+}
+div.cell {
+    
+    background-color: #E2DC07;
+    border-radius: 20px;
+    height: 100%;
+    padding-top: 23px;
+    height: 65px;
+}
+div.cell_active {
+    background-color: #14FC0F;
+    border-radius: 10px;
+    height: 100%;
+    padding-top: 23px;
+    height: 65px;
+    opacity: 0.4;
+}
+ table.kalendar {
+
+    opacity: none;
+border-spacing: 1px;
+border-collapse: separate;
+width: 820px;
+height: 550px;
+
+
+    
+}
+
+div.sugarCenter {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+span.sugarTable {
+    color: white;
+    font-size: 19px;
+}
+
+div.menu_top {
+    height: 45px;
+    width: 100%;
+    min-width: 1020px;
+    background-color: #3A5EA9;
+    border-radius: 0px 0px 0px 0px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+}
+a.menu_top {
+    color: #E2DC07;
+    
+}
+a.menu_top:hover {
+    color: #e9f351;
+    
+}
+span.kalendar {
+    color: white;
+}
+div.menu_bottom {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+div.title {
+    background-color: #05486b;
+    width: auto;
+    height: 35px;
+    border-radius: 25px 25px 0px 0px;
+    padding-left: 10px;
+    padding-right: 9px;
+    
+    color: #e9f351;
+    font-size: 23px;
+    font-weight: bold;
+    
+}
+div.titleSugar {
+    background-color: #C7E909;
+    width: auto;
+    height: 35px;
+    border-radius: 20px 20px 0px 0px;
+    padding-left: 10px;
+    padding-right: 9px;
+    
+    color: white;
+    font-size: 23px;
+    font-weight: bold;
+    
+}
+
+.center {
+    text-align: center;
+}
+td.login {
+    font-size: 20px;
+    color: yellow;
+}
