@@ -47,7 +47,7 @@ class question {
     }
     public function addNewSubCategorie() {
         $Subcategorie = new Subcategorie;
-        $Subcategorie->name = Request::get("nameCategorie");
+        $Subcategorie->name = Request::get("subCategories");
         $Subcategorie->id_categories = Request::get("idCategories");
         $Subcategorie->save();
     }
@@ -60,7 +60,7 @@ class question {
         }
     }
     public function checkSubCategorie() {
-        if (Request::get("nameCategorie") == "") {
+        if (Request::get("subCategories") == "") {
             array_push($this->error,"Musisz coś wpisać");
         }
         if ($this->checkIfExistSubCategories() == false) {
@@ -103,7 +103,7 @@ class question {
     }
     private function checkIfExistSubCategories() {
         $Subcategorie = new Subcategorie;
-        $bool = $Subcategorie->where("name",Request::get("nameCategorie"))->get();
+        $bool = $Subcategorie->where("name",Request::get("subCategories"))->get();
         if (count($bool) == 0) {
             return true;
         }

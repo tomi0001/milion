@@ -4,7 +4,10 @@ function addCategorie(url) {
     //alert($("input[name='categories']").val());
 }
 function addSubCategorie(url) {
-    $("#showAddSubCategorie").load(url + "?nameCategorie=" + $("input[name='subCategories']").val() + "&idCategories=" + $("select[name='idCategories']").val());
+    //alert("dd");
+    //$("#showAddSubCategorie").load(url + "?nameCategorie=" + $("input[name='subCategories']").val() + "&idCategories=" + $("select[name='idCategories']").val());
+    $("#showAddSubCategorie").load(url + "?" + $('form').serialize());
+    //alert("dd");
 }
 function loadSubCategories(url) {
     //var option = "";
