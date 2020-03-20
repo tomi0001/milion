@@ -5,52 +5,71 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 namespace App\Http\Controllers;
-
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-use App\Http\Services\User as User;
-use Illuminate\Support\Facades\Input as Input;
-use App\Http\Services\calendar as Calendar;
+//use Request;
+use Request as Request;
 use Auth;
-use Hash;
-use DB;
-//namespace App\Http\Controllers;
-
+use App\Http\Services\statistic as Statistic;
+use App\Http\Services\user as user;
+use App\Http\Services\question as question;
 /**
- * Description of ControllerUser
+ * Description of ControllerMain
  *
  * @author tomi
  */
 class ControllerMain {
-    public function main($year = "",$month = "",$day = "",$action = "") {
-        if ( (Auth::check()) ) {
-            $kalendar = new Calendar($month,$action,$day,$year);
-            return View("main.main") ->with("month",$kalendar->month)
-                    ->with("year",$kalendar->year)
-                    ->with("day",$kalendar->day)
-                    ->with("action",$kalendar->action)
-                    ->with("how_day_month",$kalendar->how_day_month)
-                    ->with("back",$kalendar->back_month)
-                    ->with("next",$kalendar->next_month)
-                    ->with("back_year",$kalendar->back_year)
-                    ->with("next_year",$kalendar->next_year)
-                    ->with("text_month",$kalendar->text_month)
-                    ->with("day2",1)
-                    ->with("day1",1)
-                    ->with("day3",$kalendar->day)
-                    //->with("listMood",$Moods->arrayList)
-                    //->with("count",count($Moods->arrayList))
-                    //->with("listPercent",$Moods->listPercent)
-                    //->with("colorForDay",$Moods->colorForDay)
-                    //->with("colorDay",$Moods->colorDay)
-                    ->with("color",1)
-                    ->with("day_week",$kalendar->day_week);
+    public function main() {
+        //print Request::userAgent();
+        if (Auth::check() and Auth::User()->login == "root") {
+            return View("main.error")->with("error",["Jesteś zalogowany jako root"]);
+        }
+        else if (Auth::check()) {
+            return View("main.main");
         }
         else {
-            return Redirect("/user/login");
+            return Redirect("/main/login");
+        }
+    }
+    public function login() {
+        $Statistic = new Statistic;
+        if (Auth::check() and Auth::User()->login == "root") {
+            $Statistic->saveStatistic(Auth::User()->id);
+            return View("main.error")->with("error",["Jesteś zalogowany jako root"]);
+        }
+        else if (Auth::check()) {
+            $Statistic->saveStatistic(Auth::User()->id);
+            return View("main.main");
+        }
+        else {
+            $Statistic->saveStatistic();
+            return View("main.login");
+        }
+        //$Statistic = new Statistic;
+        //$Statistic->saveStatistic();
+        
+    }
+    public function loginAction() {
+        $Statistic = new Statistic;
+        $User = new user;
+        $Statistic->saveStatistic();
+        if (Request::get("login") == "") {
+            return View("main.error")->with("error",["Muisz coś wpisać"]);
+        }
+        else {
+            $User->saveUser();
+            $id = $User->selectLastUser();
+        }
+                $user = array(
+            "id" => $id,
+            "password" => "password"
+        );
+        
+        if (Auth::attempt($user) ) {
+            return Redirect("/");
+        }
+        else {
+            return Redirect('/admin/login')->with('error','Nie prawidłowy login lub hasło');
         }
     }
 }

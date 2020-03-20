@@ -19,10 +19,22 @@ Route::get('/', function () {
  */
 
 Route::get("/","ControllerMain@main");
+Route::get("/main/login","ControllerMain@login");
+Route::post("/main/loginAction","ControllerMain@loginAction");
 
-Route::get('/main/{year?}/{month?}/{day?}/{action?}', "ControllerMain@main");
 
-Route::get("/user/login","ControllerUser@login");
-Route::get("/user/register","ControllerUser@register");
-Route::post("/user/registerAction","ControllerUser@registerAction");
-Route::post("/user/loginAction","ControllerUser@loginAction");
+Route::get("/admin","ControllerAdmin@main");
+Route::get("/admin/setPassword","ControllerAdmin@setPassword");
+Route::get("/admin/login","ControllerAdmin@login");
+Route::post("/admin/setPasswordAction","ControllerAdmin@setPasswordAction");
+Route::post("/admin/loginAction","ControllerAdmin@loginAction");
+Route::get("/admin/main","ControllerAdmin@main");
+Route::get("/admin/newQuestion","ControllerAdmin@newQuestion");
+Route::get("/admin/newCategories","ControllerAdmin@newCategories");
+Route::get("/admin/addCategorie","ControllerAdmin@addCategorie");
+Route::get("/admin/addSubCategorie","ControllerAdmin@addSubCategorie");
+Route::get("/admin/loadSubCategories","ControllerAdmin@loadSubCategories");
+Route::get("/admin/addQuestion","ControllerAdmin@addQuestion");
+Route::get("/admin/logout","ControllerAdmin@logout");
+
+

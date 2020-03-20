@@ -23,49 +23,81 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id')->unsigned();
+            $table->string('name');
+            $table->timestamps();
+        });
+        Schema::create('subcategories', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id')->unsigned();
+            $table->string('name');
+            $table->BigInteger("id_categories")->unsigned();
+            $table->timestamps();
+        });
+        Schema::create('questions', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unsigned();
             //$table->primary('id');
-            $table->string('name');
-            $table->float('how_carolier',6,2)->unsigned();
+            $table->string('questions');
+            $table->string('reply1');
+            $table->string('reply2');
+            $table->string('reply3');
+            $table->string('reply4');
+            $table->char('correct_answer',1);
+            $table->tinyInteger("level_questions")->unsigned();
+            $table->tinyInteger("if_use")->nullable();
+            //$table->BigInteger("id_users")->unsigned();
+            //$table->foreign("id_users")->references("id")->on("users");
+            $table->BigInteger("id_categories")->unsigned();
+            $table->foreign("id_categories")->references("id")->on("categories");
+            $table->BigInteger("id_subcategories")->unsigned()->nullable();
+            //$table->BigInteger("id_users")->unsigned()->nullable();
+            //$table->rememberToken();
+            $table->timestamps();
+        });
+        Schema::create('statistics', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id')->unsigned();
+            //$table->primary('id');
+            $table->dateTime('date');
+            $table->string('ip',15);
+            $table->string('system')->nullable();
+            $table->string('page');
             $table->BigInteger("id_users")->unsigned()->nullable();
+            $table->BigInteger("id_questions")->unsigned()->nullable();
+            $table->string("what_reply")->nullable();
+            //$table->BigInteger("id_users")->unsigned();
+            //$table->foreign("id_users")->references("id")->on("users");
+            //$table->BigInteger("id_categories")->unsigned();
+            //$table->foreign("id_categories")->references("id")->on("categories");
+            //$table->BigInteger("id_subcategories")->unsigned();
+            //$table->BigInteger("id_users")->unsigned()->nullable();
             //$table->rememberToken();
             $table->timestamps();
         });
-        Schema::create("registrations",function (Blueprint $table) {
+        Schema::create('questions_status', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->BigIncrements('id')->unsigned();
+            $table->bigIncrements('id')->unsigned();
             //$table->primary('id');
-            $table->datetime('date');
-            $table->integer('sugar_measurement')->length(2)->unsigned();
-            $table->integer('how_much')->length(2)->unsigned();
+            $table->BigInteger('id_questions')->unsigned();
+            $table->foreign("id_questions")->references("id")->on("questions");
             $table->BigInteger("id_users")->unsigned();
             $table->foreign("id_users")->references("id")->on("users");
-            $table->BigInteger('id_products')->unsigned();
+            $table->tinyInteger("level_questions")->unsigned();
+  
+            //$table->BigInteger("id_users")->unsigned()->nullable();
             //$table->rememberToken();
             $table->timestamps();
         });
-        /*
-        Schema::create("foods",function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->BigIncrements('id')->unsigned();
-            //$table->primary('id');
-            $table->string('name');
-            $table->integer('sugar_measurement')->length(2)->unsigned();
-            $table->integer('how_much')->length(2)->unsigned();
-            $table->BigInteger("id_users")->unsigned();
-            $table->foreign("id_users")->references("id")->on("users");
-            $table->integer('what_food')->unsigned();
-            //$table->rememberToken();
-            $table->timestamps();
-        });
-         * 
-         */
         DB::table("users")->insert(
                 ["login" => "root"]
                 );
+        /*
         DB::table("products")->insert([
+            ["name" => "nadczo",
+                 "how_carolier" => 0  ],
                 ["name" => "kawa",
                  "how_carolier" => 0.5  ],
                 ["name" => "herbata",
@@ -79,6 +111,8 @@ class CreateUsersTable extends Migration
                 ["name" => "pomarańcze",
                  "how_carolier" => 42.7  ]
                 ]);
+         * 
+         */
     }
     
 
@@ -90,8 +124,11 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('products');
-        Schema::dropIfExists('registrations');
+        Schema::dropIfExists('categories');
+        Schema::dropIfExists('subcategories');
+        Schema::dropIfExists('questions');
+        Schema::dropIfExists('statistics');
+        Schema::dropIfExists('questions_status');
        
     }
 }
