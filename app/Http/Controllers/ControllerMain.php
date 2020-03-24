@@ -45,8 +45,7 @@ class ControllerMain {
             $Statistic->saveStatistic();
             return View("main.login");
         }
-        //$Statistic = new Statistic;
-        //$Statistic->saveStatistic();
+       
         
     }
     public function loginAction() {
@@ -70,6 +69,37 @@ class ControllerMain {
         }
         else {
             return Redirect('/admin/login')->with('error','Nie prawidłowy login lub hasło');
+        }
+    }
+    public function loadQuestion($nr) {
+       if (Auth::check()) {
+        $Statistic = new Statistic;
+        $question = new question;
+        $question->getQuestion($nr);
+        $question->updateQuestion();
+        $question->saveQuestionStatus($question->questions->id,$nr);
+        $Statistic->saveStatistic(Auth::User()->id,$question->questions->id);
+           //$question["question"] = "sdsdfds sdf df dfg";
+           //$question["questionA"] = "dd";
+           //$question["questionB"] = "dd";
+           //$question["questionC"] = "dd";
+           //$question["questionD"] = "dd";
+           
+            //print $a->a;
+            $b = json_encode($question->questions);
+            print $b;
+            
+       }
+            
+            
+            
+        //print ;
+    }
+    public function getQuestion($ABCD) {
+        if (Auth::check()) {
+            $question = new question;
+            $bool = $question->checkQuestionABCD($ABCD);
+            print $bool;
         }
     }
 }

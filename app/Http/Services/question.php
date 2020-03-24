@@ -26,6 +26,9 @@ use Request as Request;
 use App\Categorie as Categorie;
 use App\Subcategorie as Subcategorie;
 use App\Question as Queston;
+use App\Questions_statu as Questions_statu;
+use DB;
+use Auth;
 /**
  * Description of question
  *
@@ -35,6 +38,7 @@ class question {
     //put your code here
     public $listCategorie = [];
     public $error = [];
+    public $questions;
     public function selectCategorie() {
         $Categorie = new Categorie;
         $this->listCategorie = $Categorie->all();
@@ -142,5 +146,36 @@ class question {
         
                 
     }
-    
+    public function getQuestion($nr) {
+        $Queston = new Queston;
+        
+        $this->questions = $Queston::where("level_questions",$nr)->where("if_use",null)
+                ->orderBy(DB::Raw("rand()"))->limit(1)->first();
+        if (empty($questions) ) {
+            $this->questions = $Queston->where("level_questions",$nr)
+                ->orderBy(DB::Raw("rand()"))->limit(1)->first();
+        }
+        //print $nr;
+    }
+    public function updateQuestion() {
+        $Queston = new Queston;
+        $Queston::where("id",$this->questions->id)->update(["if_use" => 1]);
+        
+    }
+    public function saveQuestionStatus($id,$nr) {
+        $questions_status = new Questions_statu;
+        $questions_status->id_questions = $id;
+        $questions_status->id_users = Auth::User()->id;
+        $questions_status->level_questions = $nr;
+        $questions_status->save();
+        
+    }
+    public function checkQuestionABCD($ABCD) {
+        $questions_status = new Questions_statu;
+        $bool = $questions_status->join("questions","questions.id","questions_status.id_questions")
+                                  ->selectRaw("questions.correct_answer  as correct_answer")
+                                 ->where("id_users",Auth::User()->id)
+                ->orderBy("questions_status.id","DESC")->first();
+        return $bool;
+    }
 }

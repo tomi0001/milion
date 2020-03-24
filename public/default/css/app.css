@@ -11,7 +11,7 @@ div.main {
     margin-right: auto;
     border-radius: 50%;
     box-shadow: 4px 10px 15px;
-    padding-top: 6%;
+    padding-top: 1%;
     padding-bottom: 6%;
     padding-left: 11%;
     padding-right: 11%;
@@ -50,13 +50,19 @@ div.title {
 td.center {
     text-align: center;
 }
+div.center {
+    width: 150px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
 div.bottomMain {
     width: 100%;
-    height: 45%;
-    background-color: #A31955;
+    height: 30%;
+    background-color: #96263F;
     border-radius: 25px;
     
-    opacity: 0.7;
+    
     padding: 11px;
 }
 div.question {
@@ -65,10 +71,13 @@ div.question {
     
     margin-left: auto;
     margin-right: auto;
-    background-color: rgba(94, 43, 76, 0.1);
+    background-color: #5A175E;
     
     
     
+}
+td.replyBackground {
+    background-color: black;
 }
 div.menu {
     width: 100%;
@@ -97,24 +106,46 @@ td.login2 {
     font-size: 20px;
     font-weight: bold;
 }
+div.divReply {
+    width: 97%;
+    height: 100%;
+    float:right;
+   
+}
+div.ABCD {
+    float: left;
+    height: 100%;
+    width: 3%;
+    font-size: 25px;
+    padding-top: 20px;
+  
+}
+a.linkReply {
+    color: yellow;
+}
+div.questionQuestion {
+    color: yellow;
+}
 div.questionQuestion {
     width: 100%;
-    height: 50%;
+    height: 43%;
     
     margin-left: auto;
     margin-right: auto;
-    border: 2px solid #37376F;
-  background: rgb(142,52,244);
-background: radial-gradient(circle, rgba(167,35,191,1) 20%, rgba(188,75,141,0.5648460067620799) 46%);
+    border-top: 1px solid #F0A02C;
+    border-left: 1px solid #F0A02C;
+    border-right: 1px solid #F0A02C;
+  background:#5A175E;
     
 }
 td.questionQuestionA {
     width: 50%;
    height: 50%;
- background: rgb(142,52,244);
-background: radial-gradient(circle, rgba(167,35,191,1) 20%, rgba(188,75,141,0.5648460067620799) 46%);
+   color: yellow;
+   
+ background: #5A175E;
     
-    border: 2px solid #37376F;
+    border: 1px solid #F0A02C;
 }
 table.question {
     width: 100%;
@@ -125,26 +156,26 @@ div.questionQuestionB {
     height: 25%;
     float: right;
    
-    border: 2px solid #37376F;
+    border: 2px solid #F0A02C;
 }
 div.questionQuestionC {
   width: 50%;
     height: 25%;
    float: left;
     
-    border: 2px solid #37376F;
+    border: 2px solid #F0A02C;
 }
 div.questionQuestionD {
   width: 50%;
     height: 25%;
     float: right;
    clear: both;
-    border: 2px solid #37376F;
+    border: 2px solid #F0A02C;
 }
 
 div.questionQuestion2 {
         width: 100%;
-    height: 100%;
+    height: 120%;
     
     margin-left: auto;
     margin-right: auto;

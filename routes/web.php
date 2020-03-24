@@ -21,7 +21,8 @@ Route::get('/', function () {
 Route::get("/","ControllerMain@main");
 Route::get("/main/login","ControllerMain@login");
 Route::post("/main/loginAction","ControllerMain@loginAction");
-
+Route::get("/main/loadQuestion/{nr?}","ControllerMain@loadQuestion");
+Route::get("/main/getQuestion/{ABCD?}","ControllerMain@getQuestion");
 
 Route::get("/admin","ControllerAdmin@main");
 Route::get("/admin/setPassword","ControllerAdmin@setPassword");

@@ -32,8 +32,11 @@ class ControllerAdmin {
         else if ( !Auth::check()) {
             return Redirect("/admin/login");
         }
-        else {
+        else if ( Auth::User()->login == "root" ){
             return View("admin.main");
+        }
+        else {
+            return Redirect("/admin/login");
         }
     }
     public function setPassword() {

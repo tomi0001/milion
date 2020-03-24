@@ -40,7 +40,7 @@ class CreateUsersTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id')->unsigned();
             //$table->primary('id');
-            $table->string('questions');
+            $table->string('questions',700);
             $table->string('reply1');
             $table->string('reply2');
             $table->string('reply3');
