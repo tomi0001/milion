@@ -19,7 +19,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Request as Request;
 use App\Statistic as Statistics;
 class statistic {
-    
     public function saveStatistic($idUsers = 0,$idQuestions = 0,$whatReply = "") {
         $Statistic = new Statistics;
         $Statistic->date = date("Y-m-d H:i:s");
@@ -31,7 +30,7 @@ class statistic {
         $Statistic->what_reply  = $whatReply;
         $Statistic->save();
         //$Statistic->date = date("Y-m-d H:i:s");
-        
+
     }
-     
+
 }

@@ -19,7 +19,9 @@ div.main {
 }
 div.topMain {
     height: 50%;
-    width: 90%;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 div.login {
     width: 70%;
@@ -88,7 +90,16 @@ div.menu {
     border-radius: 20px;
 }
 
+table.priceQuestion {
+    width: 100%;
+    font-size: 11px;
+    color: white;
+    padding: 0px;
+}
 
+td.right {
+    text-align: right;
+}
 div.link {
     padding-left: 6px;
     float: left;
@@ -216,4 +227,52 @@ div.error {
     margin-right: auto;
     border-radius: 20px;
     color: #99CF0C;
+}
+#lifebuoys {
+    visibility: hidden;
+    width: 85%;
+    
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+div.lifebuoys {
+    float: left;
+    width: 31%;
+    height: 50px;
+    margin: 2px;
+     line-height: 50px;
+    text-align: center;
+    background-color: yellow;
+    border-radius: 20px;
+    color: #000080;
+}
+div.lifebuoys:hover {
+    float: left;
+    width: 31%;
+    height: 50px;
+    margin: 2px;
+     line-height: 50px;
+    text-align: center;
+    background-color: yellow;
+    border-radius: 20px;
+    color: #B9DA79;
+}
+div.lifebuoys_1 {
+    float: left;
+    width: 31%;
+    height: 50px;
+    margin: 2px;
+     line-height: 50px;
+    text-align: center;
+    background-color: silver;
+    border-radius: 20px;
+    color: #000080;
+}
+div.leftMenu {
+    width: 14%;
+    height: 100%;
+    background: rgb(152,17,194);
+    background: linear-gradient(90deg, rgba(152,17,194,1) 86%, rgba(41,8,42,1) 100%);
+    float: left;
 }

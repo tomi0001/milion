@@ -12,7 +12,9 @@
 
        <link href="{{ asset('./default/css/app.css') }}" rel="stylesheet">
     </head>
-    
+    <div class="leftMenu">
+        @include('main.leftMenu')
+    </div>
     
     <div class="main">
           @yield('content')

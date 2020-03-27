@@ -1,6 +1,16 @@
+var urlSend;
+var audio;
+var audio2;
+var nrSend;
+var type;
+var lenght;
+var idCategories = '';
+var idSubCategories = '';
+var type;
+var bool = false;
 function addCategorie(url) {
-    
-    $("#showAddCategorie").load(url + "?nameCategorie=" + $("input[name='categories']").val());
+
+    $("#showAddCategorie").load(url + "?" + $('form').serialize());
     //alert($("input[name='categories']").val());
 }
 function addSubCategorie(url) {
@@ -19,13 +29,22 @@ function loadSubCategories(url) {
     }
     //$("select[name='subCategories']").html("<option value=''>asdsd</option>");
 }
-var urlSend;
-var audio;
-var audio2;
-var nrSend;
+function loadSubCategories2(url) {
+    //var option = "";
+    //alert("asdsd");
+    if ($("select[name='Categories']").val() == "") {
+        $("select[name='subCategories']").html("");
+    }
+    else {
+        $("select[name='subCategories']").load(url + "?idCategorie=" + $("select[name='Categories']").val());
+    }
+
+    //$("select[name='subCategories']").html("<option value=''>asdsd</option>");
+}
 function hideSucces() {
     //alert("zsdsd");
     $(".succes").hide(5000);
+    
 }
 
 function addquestion(url) {
@@ -38,30 +57,120 @@ function loadAmbient() {
     audio.preload = 'auto';
     audio.loop = true;
     audio.play();
+
+    //alert(url);
+
 }
+function setType() {
+    if (idCategories == "" && idSubCategories == "") {
+        type=1;
+    }
+    else if (idCategories != "" && idSubCategories == "") {
+        type = 2;
+    }
+    else {
+        type = 3;
+    }
+    
+}
+function loadPrice(url) {
+    //location.reload();
+    idCategories = $("select[name='Categories']").val();
+    idSubCategories = $("select[name='subCategories']").val();
+    setType();
+
+    clearData();
+    //type = $("select[name='type']").val();
+    //type= 3;
+    $("#topMain").load(url + "?" + $("form").serialize() + "&type=" + type);
+    nrSend = 0;
+    $("#newGame").html("");
+    $("#lifebuoys").css("visibility","visible");
+
+
+
+
+}
+
+function halfToHalf(url) {
+    if (bool == false) {
+     var data;
+     
+        $.ajax({
+            url: url,
+            async: false
+        }).done(function(response) {
+            data = response
+        })
+        audio2 = new Audio('./muzyka/fifti_1.wav');
+    audio2.preload = 'auto';
+    //audio2.loop = true;
+    audio2.play();
+    bool = true;
+        var data2 = JSON.parse(data);
+        $("#question" + data2.one).text("");
+        $("#question" + data2.two).text("");
+        $("#halfToHalf").css("background-color","silver");
+    }
+}
+
 function loadtlo1(url,nr = nrSend) {
     //alert("ss");
     audio.pause();
     //alert(nrSend);
+    //alert(idCategories);
     audio.currentTime = 0;
-    
-    if (nr >= 0 && nr <=3) {
+    /*
+    if (nr >= 0 && nr <1) {
         audio = new Audio('./muzyka/tlo_pyt_1_2.wav');
+    }
+    else if (nr >= 1 && nr < 3) {
+        audio = new Audio('./muzyka/tlo_pyt_3.wav');
+    }
+     *
+     */
+    //alert($("#price_" + (lenght - nrSend)).text());
+    if (type == 1) {
+
+        if (nrSend > 3 ) {
+            audio = new Audio('./muzyka/tlo_pyt_3.wav');
+        }
+        else {
+            audio = new Audio('./muzyka/tlo_pyt_1_2.wav');
+        }
+
+    }
+    else if (type == 2) {
+         if (nrSend > 1 ) {
+            audio = new Audio('./muzyka/tlo_pyt_3.wav');
+        }
+        else {
+            audio = new Audio('./muzyka/tlo_pyt_1_2.wav');
+        }
+    }
+    else {
+           if (nrSend > 1 ) {
+            audio = new Audio('./muzyka/tlo_pyt_3.wav');
+        }
+        else {
+            audio = new Audio('./muzyka/tlo_pyt_1_2.wav');
+        }
     }
     audio.preload = 'auto';
     audio.loop = true;
     audio.play();
     urlSend = url;
     //if ()
+    //alert(type);
     nrSend = nr;
     readQuestion(url);
 }
 function readQuestion(url) {
 
         var data;
-
+//alert(idCategories);
         $.ajax({
-            url: url + "/" + nrSend,
+            url: url + "/" + nrSend + "/" + idCategories + "/" + idSubCategories,
             async: false
         }).done(function(response) {
             data = response
@@ -98,8 +207,8 @@ function readQuestion(url) {
             $("#questionD").css("font-size",font[0]);
             $("#questionD").css("padding",font[1]);
         }, 4000);
-     
- 
+
+
 }
 
 function heightFontQuestion(string) {
@@ -144,7 +253,7 @@ function heightFontReply(string) {
     //}
     else {
         return ["11px","0px"];
-    }    
+    }
 }
 
 
@@ -167,19 +276,25 @@ function win(ABCD) {
                 sec = 3000;
                 audio = new Audio('./muzyka/ffordnung_1.wav');
             }
+            //if ($("#price_" + nrSend).text() >= 300) {
+              //  sec = 3000;
+                //audio = new Audio('./muzyka/ffordnung_1.wav');
+            //}
+
             //alert(sec);
-            
-    setTimeout(function(){        
-            
-            
-            $("#" + ABCD).css("background-color","green");
-        }, 2000);    
+
     setTimeout(function(){
-    
-            
+
+
+            $("#" + ABCD).css("background-color","green");
+             selectPrice();
+        }, 2000);
+    setTimeout(function(){
+
+
             audio.preload = 'auto';
             audio.play();
-            
+
             setTimeout(function(){
                 audio = new Audio('./muzyka/q_start_1_2_3_1.wav');
                 audio.preload = 'auto';
@@ -187,10 +302,10 @@ function win(ABCD) {
                 //$("#" + ABCD).css("background-color","green");
              }, sec);
              clearData();
-              
+
         }, sec);
         setTimeout(function(){
-                  nrSend+=3;
+                  nrSend++;
                   //alert(nrSend);
                   loadtlo1(urlSend);
            //     audio = new Audio('./muzyka/q_start_1_2_3_1.wav');
@@ -201,9 +316,9 @@ function win(ABCD) {
 
         //alert(urlSend);
         //loadtlo1(urlSend,nr+3);
-    
-    
-    
+
+
+
 }
 function clearData() {
     //alert("sadasd");
@@ -211,7 +326,7 @@ function clearData() {
     $("#b").css("background-color","");
     $("#c").css("background-color","");
     $("#d").css("background-color","");
-    
+
     $("#questionA").text("");
     $("#questionB").text("");
     $("#questionC").text("");
@@ -244,10 +359,24 @@ function replyAction(ABCD,url) {
     else {
         lost(bool);
     }
-    
-    
-}
 
+
+}
+function selectPrice() {
+
+    if (type == 1) {
+        lenght = 10;
+    }
+    else if (type == 2){
+        lenght = 15;
+    }
+    else {
+        lenght = 23;
+    }
+    var wynik = lenght - nrSend;
+    $("#price_" + wynik).css("background-color","green");
+    //$("#price_" + wynik-1).css("background-color","");
+}
 function win_if_lost(url) {
         var data;
 
@@ -259,5 +388,5 @@ function win_if_lost(url) {
         })
         var data2 = JSON.parse(data);
         return data2.correct_answer;
-        
+
 }

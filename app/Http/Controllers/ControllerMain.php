@@ -21,11 +21,13 @@ use App\Http\Services\question as question;
 class ControllerMain {
     public function main() {
         //print Request::userAgent();
+        $question = new question;
+        $question->selectCategorie();
         if (Auth::check() and Auth::User()->login == "root") {
             return View("main.error")->with("error",["Jesteś zalogowany jako root"]);
         }
         else if (Auth::check()) {
-            return View("main.main");
+            return View("main.main")->with("listCategories",$question->listCategorie);
         }
         else {
             return Redirect("/main/login");
@@ -45,8 +47,8 @@ class ControllerMain {
             $Statistic->saveStatistic();
             return View("main.login");
         }
-       
-        
+
+
     }
     public function loginAction() {
         $Statistic = new Statistic;
@@ -63,7 +65,7 @@ class ControllerMain {
             "id" => $id,
             "password" => "password"
         );
-        
+
         if (Auth::attempt($user) ) {
             return Redirect("/");
         }
@@ -71,35 +73,59 @@ class ControllerMain {
             return Redirect('/admin/login')->with('error','Nie prawidłowy login lub hasło');
         }
     }
-    public function loadQuestion($nr) {
+    public function loadQuestion($nr,$idCategories = "",$idSubCategories = "") {
        if (Auth::check()) {
         $Statistic = new Statistic;
         $question = new question;
-        $question->getQuestion($nr);
+        $question->getQuestion($nr,$idCategories,$idSubCategories);
         $question->updateQuestion();
         $question->saveQuestionStatus($question->questions->id,$nr);
         $Statistic->saveStatistic(Auth::User()->id,$question->questions->id);
-           //$question["question"] = "sdsdfds sdf df dfg";
-           //$question["questionA"] = "dd";
-           //$question["questionB"] = "dd";
-           //$question["questionC"] = "dd";
-           //$question["questionD"] = "dd";
-           
-            //print $a->a;
+
             $b = json_encode($question->questions);
             print $b;
-            
+
        }
-            
-            
-            
+
+
+
         //print ;
+    }
+    public function loadFirstQuestion() {
+        if (Auth::check()) {
+            $question = new question;
+            $price = $question->loadPriceForQuestion(Request::get("Categories"), Request::get("subCategories"));
+            return View("main.showPriceForQuestion")->with("price",$price);
+        }
     }
     public function getQuestion($ABCD) {
         if (Auth::check()) {
             $question = new question;
             $bool = $question->checkQuestionABCD($ABCD);
             print $bool;
+        }
+    }
+    public function halfToHalf() {
+        if (Auth::check()) {
+            $question = new question;
+            $ABCD = $question->readQuestion();
+            $rand = $question->randReply($ABCD);
+            $return = json_encode($rand);
+            print $return;
+        }
+    }
+    public function loadSubCategories() {
+        $Statistic = new Statistic;
+        $Categorie = new question;
+        if ( (Auth::check())  ) {
+            $Statistic->saveStatistic(Auth::User()->id);
+            $list = $Categorie->loadSubCategorie(Request::get("idCategorie"));
+
+            return View("main.loadSubCategories")->with("listCategories",$list);
+        }
+        else {
+            $Statistic->saveStatistic();
+            //return Redirect("/admin/login");
         }
     }
 }
