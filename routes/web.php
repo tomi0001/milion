@@ -26,7 +26,7 @@ Route::get("/main/getQuestion/{ABCD?}","ControllerMain@getQuestion");
 Route::get("/main/loadFirstQuestion","ControllerMain@loadFirstQuestion");
 Route::get("/main/loadSubCategories","ControllerMain@loadSubCategories");
 Route::get("/main/halfToHalf","ControllerMain@halfToHalf");
-
+Route::get("/main/questionToAudience","ControllerMain@questionToAudience");
 
 Route::get("/admin","ControllerAdmin@main");
 Route::get("/admin/setPassword","ControllerAdmin@setPassword");

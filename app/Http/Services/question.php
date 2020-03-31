@@ -143,7 +143,7 @@ class question {
                 break;
             default: $intReply = 4;
                 break;
-            
+
         }
         $one = "";
         $two  ="";
@@ -163,7 +163,7 @@ class question {
                 break;
             default: $array[0] = 'D';
                 break;
-            
+
         }
         switch ($two) {
             case 1: $array[1] = 'A';
@@ -174,9 +174,73 @@ class question {
                 break;
             default: $array[1] = 'D';
                 break;
-            
+
         }
         return array("one" => $array[0],"two" => $array[1]);
+    }
+    public function negateHalfToHalf($AB) {
+        $i = 0;
+
+        start:
+
+        if ($AB->reply_11 == "A" and $AB->reply_22 == "B") {
+            return array('c','d');
+        }
+        if ($AB->reply_11 == "A" and $AB->reply_22 == "C") {
+            return array('d','b');
+        }
+        if ($AB->reply_11 == "A" and $AB->reply_22 == "D") {
+            return array('c','b');
+        }
+
+        if ($AB->reply_11 == "B" and $AB->reply_22 == "A") {
+            return array('c','d');
+        }
+        if ($AB->reply_11 == "B" and $AB->reply_22 == "C") {
+            return array('a','d');
+        }
+        if ($AB->reply_11 == "B" and $AB->reply_22 == "D") {
+            return array('c','a');
+        }
+
+        if ($AB->reply_11 == "C" and $AB->reply_22 == "A") {
+            return array('c','d');
+        }
+        if ($AB->reply_11 == "C" and $AB->reply_22 == "B") {
+            return array('d','a');
+        }
+        if ($AB->reply_11 == "C" and $AB->reply_22 == "D") {
+            return array('a','b');
+        }
+
+        if ($AB->reply_11 == "D" and $AB->reply_22 == "A") {
+            return array('c','b');
+        }
+        if ($AB->reply_11 == "D" and $AB->reply_22 == "B") {
+            return array('a','c');
+        }
+        if ($AB->reply_11 == "D" and $AB->reply_22 == "C") {
+            return array('b','a');
+        }
+        $tmp = $AB->reply_22;
+        $AB->reply_11 = $AB->reply_22;
+        $AB->reply_22 = $tmp;
+        $i++;
+        if ($i <= 0) {
+            goto start;
+        }
+        /*
+        if ($AB->reply_11 == "d" and $AB->reply_22 == "b") {
+            return array('c','d');
+        }
+        if ($AB->reply_11 == "a" and $AB->reply_22 == "b") {
+            return array('c','d');
+        }
+        if ($AB->reply_11 == "a" and $AB->reply_22 == "b") {
+            return array('c','d');
+        }
+        */
+        //return array('v','d');
     }
     public function checkQuestion() {
 
@@ -240,7 +304,290 @@ class question {
         $questionName = $Questions_statu->where("id_users",Auth::User()->id)->orderBy("id","DESC")->first();
         $Queston = new Queston;
         $ABCD = $Queston->where("id",$questionName->id_questions)->first();
-        return $ABCD->correct_answer;
+        return array($ABCD->correct_answer,$ABCD->level_questions);
+    }
+    public function randAudience($AB,$A) {
+        $suma = 100;
+        $array = [];
+        $rand = 0;
+        switch ($A[1]) {
+            case 0: $rand = 98;
+                break;
+            case 1: $rand = 97;
+                break;
+            case 2: $rand = 96;
+                break;
+            case 3: $rand = 95;
+                break;
+            case 4: $rand = 94;
+                break;
+            case 5: $rand = 93;
+                break;
+            case 6: $rand = 92;
+                break;
+            case 7: $rand = 91;
+                break;
+            case 8: $rand = 90;
+                break;
+            case 9: $rand = 89;
+                break;
+            case 10: $rand = 88;
+                break;
+            case 11: $rand = 87;
+                break;
+            case 12: $rand = 86;
+                break;
+            case 13: $rand = 85;
+                break;
+            case 14: $rand = 84;
+                break;
+            case 15: $rand = 83;
+                break;
+            case 16: $rand = 82;
+                break;
+            case 17: $rand = 81;
+                break;
+            case 18: $rand = 80;
+                break;
+            case 19: $rand = 79;
+                break;
+            case 20: $rand = 78;
+                break;
+            case 21: $rand = 77;
+                break;
+            case 22: $rand = 76;
+                break;
+            case 23: $rand = 75;
+                break;
+        }
+
+        //$difference = 23 - $A[1];
+        //$rand1 = 240 - ($difference * 10);
+        $rand1 = $rand * rand(5,10);
+//print "<font color=red>" . $AB->reply_11 . "</font>";
+       //return rand($rand1,1000);$A[1]
+        if ($AB->reply_11 == '' and $AB->reply_22 == '') {
+            $suma = $this->loadReplyAudience($A[0], $rand1, $AB);
+        }
+        else {
+            $suma = $this->loadReplyAudienceAB($A[0],$rand1,$AB);
+        }
+       return $suma;
+    }
+
+
+
+    private function selABC($AB,$correct_answer) {
+        $array = ['a','b','c','d'];
+        $i = 0;
+        while ($i < count($array)) {
+            if ( ($array[$i] == $AB[0] or $array[$i] == $AB[1]) and $array[$i] != $correct_answer ) {
+                return $array[$i];
+            }
+            $i++;
+        }
+
+    }
+    private function loadReplyAudienceAB($correct_answer,$value,$AB) {
+        $array = [];
+        $ABNeg = $this->negateHalfToHalf($AB);
+        //var_dump($ABNeg);
+        if ($correct_answer == "a" ) {
+            $array["a"] = round($value / 10);
+            $abcd = $this->selABC($ABNeg,$correct_answer);
+            $array[$abcd] =   100 - round($value / 10);
+
+
+        }
+        /*
+        if ($correct_answer == "a" and ($AB->reply_11 == 'b' or $AB->reply_22 == 'b') ) {
+            $array["a"] = round($value / 10);
+            $array["d"] =  100 - round($value / 10);
+
+        }
+        if ($correct_answer == "a" and ($AB->reply_11 == 'c' or $AB->reply_22 == 'c') ) {
+            $array["a"] = round($value / 10);
+            $array["b"] =   100 - round($value / 10);
+
+        }
+        */
+
+        if ($correct_answer == "b" ) {
+            $array["b"] = round($value / 10);
+            $abcd = $this->selABC($ABNeg,$correct_answer);
+            $array[$abcd] =   100 - round($value / 10);
+
+        }
+        /*
+        if ($correct_answer == "b"  and ($AB->reply_11 == 'd' or $AB->reply_22 == 'd')) {
+            $array["b"] = round($value / 10);
+            $array["c"] =   100 - round($value / 10);
+
+        }
+        if ($correct_answer == "b"  and ($AB->reply_11 == 'a' or $AB->reply_22 == 'a')) {
+            $array["b"] = round($value / 10);
+            $array["d"] =   100 - round($value / 10);
+
+        }
+*/
+
+        if ($correct_answer == "c") {
+            $array["c"] = round($value / 10);
+            $abcd = $this->selABC($ABNeg,$correct_answer);
+            $array[$abcd] =   100 - round($value / 10);
+
+        }/*
+        if ($correct_answer == "c" and ($AB->reply_11 == 'b' or $AB->reply_22 == 'b')) {
+            $array["c"] = round($value / 10);
+            $array["d"] = 100 - round($value / 10);
+
+        }
+        if ($correct_answer == "c" and ($AB->reply_11 == 'd' or $AB->reply_22 == 'd')) {
+            $array["c"] = round($value / 10);
+            $array["a"] = 100 - round($value / 10);
+
+        }
+*/
+
+        if ($correct_answer == "d" ) {
+            $array["d"] = round($value / 10);
+            $abcd = $this->selABC($ABNeg,$correct_answer);
+            $array[$abcd] =   100 - round($value / 10);
+
+        }
+        /*
+        if ($correct_answer == "d" and ($AB->reply_11 == 'b' or $AB->reply_22 == 'b')) {
+            $array["d"] = round($value / 10);
+            $array["c"] = 100 - round($value / 10);
+
+        }
+        if ($correct_answer == "d" and ($AB->reply_11 == 'c' or $AB->reply_22 == 'c')) {
+            $array["d"] = round($value / 10);
+            $array["a"] = 100 - round($value / 10);
+
+        }
+        $array["d"] = round($value / 10);
+        $array["a"] = 100 - round($value / 10);
+        */
+        return $array;
+        /*
+        if ($correct_answer == "d") {
+            $array["d"] = round($value / 10);
+
+        }
+        */
+    }
+
+
+    private function loadReplyAudience($correct_answer,$value,$AB) {
+        $array = [];
+        if ($correct_answer == "a") {
+            $array["a"] = round($value / 10);
+
+        }
+        if ($correct_answer == "b") {
+            $array["b"] = round($value / 10);
+
+        }
+        if ($correct_answer == "c") {
+            $array["c"] = round($value / 10);
+
+        }
+        if ($correct_answer == "d") {
+            $array["d"] = round($value / 10);
+
+        }
+        start:
+            $suma = 100 - round($value / 10); // 30
+            $i = 0;
+            $j = rand(0,$suma); // 6
+            $suma2 =  $suma - $j; // 24
+            if ( $suma2 < 0 ) {
+                -$suma2;
+            }
+            $z=  rand(0,$suma2); // 5989898
+
+            $endSuma = $suma2 - $z; // 24 - 5 = 19
+            if ($endSuma < 0) {
+                -$endSuma;
+            }
+            $y =100 - ($endSuma   + $suma2 + round($value / 10));
+            if ($y < 0 ) {
+                goto start;
+            }
+            if ($AB->reply_11 != "" and $AB->reply_22 != "") {
+                $array = $this->switchAB($array,$suma);
+            }
+            else {
+                $array = $this->switchABCD($array, $suma2, $endSuma, $y);
+            }
+
+        //$t =  0;
+        //while ($t < 4) {
+
+
+
+            //$t++;
+        //}
+        /*
+        while (true) {
+            $j = rand(0,$suma);
+            $suma2 = $suma - $j;
+            while (true) {
+                if ()
+            }
+            $i++;
+        }
+         *
+         */
+        return $array;
+    }
+    /*
+
+    private function switchAB($array,$suma)
+    {
+        if (isset($array["a"])) {
+            $array['b'] = $suma;
+            $array['c'] = $suma;
+            $array['d'] = $suma;
+
+        }
+        else if (isset($array["b"])) {
+            $array['a'] = $suma;
+            $array['c'] = $suma;
+            $array['d'] = $suma;
+        } else if (isset($array["c"])) {
+            $array['d'] = $suma;
+            $array['a'] = $suma;
+            $array['b'] = $suma;
+        } else if (isset($array["d"])) {
+            $array['a'] = $suma;
+            $array['b'] = $suma;
+            $array['c'] = $suma;
+        }
+        return $array;
+    }
+*/
+    private function switchABCD($array,$suma2,$endSuma,$y)
+    {
+        if (isset($array["a"])) {
+            $array['b'] = $suma2;
+            $array['c'] = $endSuma;
+            $array['d'] = $y;
+        } else if (isset($array["b"])) {
+            $array['a'] = $suma2;
+            $array['c'] = $endSuma;
+            $array['d'] = $y;
+        } else if (isset($array["c"])) {
+            $array['d'] = $suma2;
+            $array['a'] = $endSuma;
+            $array['b'] = $y;
+        } else if (isset($array["d"])) {
+            $array['a'] = $suma2;
+            $array['b'] = $endSuma;
+            $array['c'] = $y;
+        }
+        return $array;
     }
     public function addNewQuestion() {
         $Queston = new Queston;
@@ -256,8 +603,8 @@ class question {
         $Queston->save();
 
 
-    } 
-    
+    }
+
     private function setNr($nr,$type) {
         $array =[];
         if ($type== 1) {
@@ -304,46 +651,46 @@ class question {
             else {
                 $array = [22,23,24];
             }
-            
+
         }
         else if ($type== 2) {
             if ($nr == 1) {
-            
+
                 $array = [1,2];
             }
-            
+
             else if ($nr == 2) {
                 $array = [2,4];
             }
-            
+
             else if ($nr == 3) {
                 $array = [5];
             }
-            
+
             else if ($nr == 4) {
                 $array = [6];
             }
-            
+
             else if ($nr == 5) {
                 $array = [7];
             }
-            
+
             else if ($nr == 6) {
                 $array = [8,9];
             }
-            
+
             else if ($nr == 7) {
                 $array = [10,11];
             }
-            
+
             else if ($nr == 8) {
                 $array = [12];
             }
-            
+
             else if ($nr == 9) {
                 $array = [13];
             }
-            
+
             else if ($nr == 10) {
                 $array = [14];
             }
@@ -365,50 +712,50 @@ class question {
             else {
                 $array = [24];
             }
-            
+
         }
         else {
             $array = [$nr];
         }
         return $array;
     }
-    
+
     public function getQuestion($nr,$idCategories,$idSubCategories) {
         //print $idCategories;
         $nrArray = $this->setNr($nr, Request::get('type'));
         $Queston = Queston::query();
         $que = Queston::query();
          $que2 = Queston::query();
-         
+
         //$if_use = null;
          $que->whereIn("level_questions",$nrArray)->where("if_use",null);
-                
+
                 if ($idCategories != "") {
                     $que->where("id_categories",$idCategories);
                 }
                 if ($idSubCategories != "") {
                     $que->where("id_subcategories",$idSubCategories);
                 }
-                
+
                 $que->orderBy(DB::Raw("rand()"))->limit(1);
                $this->questions =   $que->first();
         if (empty($this->questions) ) {
              $que2->whereIn("level_questions",$nrArray);
                 //$que2->where("level_questions",$nr);
-                
+
                 if ($idCategories != "") {
                     $que2->where("id_categories",$idCategories);
                 }
                 if ($idSubCategories != "") {
                     $que2->where("id_subcategories",$idSubCategories);
                 }
-                
+
                 $que2->orderBy(DB::Raw("rand()"))->limit(1);
                  //$que2->first();
                   $this->questions = $que2->first();
         }
         //print $nr;
-       
+
     }
     public function updateQuestion() {
         $Queston = new Queston;
@@ -427,7 +774,7 @@ class question {
         }
         /*
         if ($type == 1) {
-            
+
         }
         else if ($type == 2) {
             return array_reverse($this->price2);
@@ -435,7 +782,7 @@ class question {
         else {
             return array_reverse($this->price3);
         }
-         * 
+         *
          */
 
 
@@ -446,6 +793,17 @@ class question {
 
 
 
+    }
+    public function saveReply($rand) {
+        $questions_status = new Questions_statu;
+        $questions_status->where("id_users",Auth::User()->id)->orderBy("id","DESC")->limit(1)
+                ->update(["reply_11"=>$rand["one"],"reply_22" => $rand["two"]]);
+
+    }
+    public function readReplyAB() {
+        $questions_status = new Questions_statu;
+        $read = $questions_status->where("id_users",Auth::User()->id)->orderBy("id","DESC")->first();
+        return $read;
     }
     public function saveQuestionStatus($id,$nr) {
         $questions_status = new Questions_statu;

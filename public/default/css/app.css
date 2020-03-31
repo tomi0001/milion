@@ -269,6 +269,31 @@ div.lifebuoys_1 {
     border-radius: 20px;
     color: #000080;
 }
+div.abcd2 {
+    min-height: 1px;
+    margin-right: 8px;
+    clear: both;
+    background-color: #461287;
+    width: 40px;
+    float: left;
+}
+#questionToAudience2 {
+    width: 40%;
+    height: 200px;
+    
+}
+div.value {
+    clear: both;
+    text-align: center;
+}
+div.audience3 {
+    float: left;
+}
+div.audience {
+    font-size: 16px;
+    color: white;
+    height: 300px; float: left;
+}
 div.leftMenu {
     width: 14%;
     height: 100%;

@@ -109,9 +109,30 @@ class ControllerMain {
         if (Auth::check()) {
             $question = new question;
             $ABCD = $question->readQuestion();
-            $rand = $question->randReply($ABCD);
+            $rand = $question->randReply($ABCD[0]);
+            $question->saveReply($rand);
             $return = json_encode($rand);
             print $return;
+        }
+    }
+
+    public function questionToAudience() {
+        if (Auth::check()) {
+           $question = new question;
+           $AB =  $question->readReplyAB();
+           $A =   $question->readQuestion();
+           //$question->ifHalhToHalf()
+                  $audience = $question->randAudience($AB,$A);
+                  //print var_dump($a);
+                  //print array_sum($a);
+            if ($AB->reply_11 == "" and $AB->reply_22 == "") {
+                return View("lifebuoys.audience")->with("audience", $audience);
+            }
+            else {
+
+                //$ABNegative = $question->negateHalfToHalf($AB);
+                return View("lifebuoys.audienceAB")->with("audience", $audience);
+            }
         }
     }
     public function loadSubCategories() {

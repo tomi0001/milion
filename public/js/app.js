@@ -8,6 +8,7 @@ var idCategories = '';
 var idSubCategories = '';
 var type;
 var bool = false;
+var bool2 = false;
 function addCategorie(url) {
 
     $("#showAddCategorie").load(url + "?" + $('form').serialize());
@@ -113,7 +114,37 @@ function halfToHalf(url) {
         $("#halfToHalf").css("background-color","silver");
     }
 }
-
+function questionToAudience(url) {
+        //if (bool == false) {
+     var data;
+     
+      //  $.ajax({
+    //        url: url,
+  //          async: false
+//        }).done(function(response) {
+//            data = response
+        //})
+        audio.pause();
+        audio2 = new Audio('./muzyka/odwazniki_1.wav');
+    audio2.preload = 'auto';
+    //audio2.loop = true;
+    audio2.play();
+    setTimeout(function(){
+        audio.play();
+        $("#questionToAudience2").load(url);
+    //        $("#question").text(data2.questions).show(3500);
+      //      var font = heightFontQuestion(data2.questions);
+        //    $("#question").css("font-size",font[0]);
+          //  $("#question").css("padding",font[1]);
+        },5100);
+    bool2 = true;
+//        var data2 = JSON.parse(data);
+  //      $("#question" + data2.one).text("");
+    //    $("#question" + data2.two).text("");
+      //  $("#halfToHalf").css("background-color","silver");
+      
+    //}
+}
 function loadtlo1(url,nr = nrSend) {
     //alert("ss");
     audio.pause();

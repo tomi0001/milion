@@ -33,12 +33,16 @@
                 Telefon do przyjaciela
             </div>
         </a>
-         <a href="{{ url('/main/questionToPublics')}}">
+         <a onclick="questionToAudience('{{ url('/main/questionToAudience')}}')" id='questionToAudience'>
             <div class="lifebuoys">
                 Pytanie do publiczności
             </div>
         </a>
     </div>
+
+<div id="questionToAudience2" >
+   
+</div>
     <div class="topMain" >
         </div>
         <div class="bottomMain">
